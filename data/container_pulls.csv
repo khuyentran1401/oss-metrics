@@ -1,8 +1,8 @@
 date,registry,image,pulls
-2026-10-08,dockerhub,artifactkeeper/backend,116531
+2026-10-08,dockerhub,artifactkeeper/backend,116551
 2026-10-08,dockerhub,artifactkeeper/docker-desktop,1213
-2026-10-08,dockerhub,artifactkeeper/openscap,118768
-2026-10-08,dockerhub,artifactkeeper/scanner-adapter,51483
+2026-10-08,dockerhub,artifactkeeper/openscap,118771
+2026-10-08,dockerhub,artifactkeeper/scanner-adapter,51486
 2026-10-08,dockerhub,artifactkeeper/web,31175
 2026-10-08,ghcr,nebari-dev/apps-pack%2Fapps-api,170
 2026-10-08,ghcr,nebari-dev/apps-pack%2Fapps-mcp,228
