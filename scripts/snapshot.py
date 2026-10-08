@@ -1,8 +1,8 @@
-"""Save a daily snapshot of download and star stats for OpenTeams open-source repos.
+"""Save a weekly snapshot of download and star stats for OpenTeams open-source repos.
 
 GitHub, conda-forge, Docker Hub and ghcr.io only report current totals, GitHub
 only shows star dates to accounts with push access, pypistats keeps 180 days
-and quay.io keeps 90, so running this daily builds the history needed for
+and quay.io keeps 90, so running this weekly builds the history needed for
 growth-over-time charts. Per-release downloads are rewritten in full on every run.
 """
 

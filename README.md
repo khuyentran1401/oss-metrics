@@ -1,6 +1,6 @@
 # oss-metrics
 
-Daily snapshots of public GitHub stats for OpenTeams open-source repos.
+Weekly snapshots of public download, pull and star stats for OpenTeams open-source repos.
 
 ## Why
 
