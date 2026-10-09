@@ -23,13 +23,16 @@ date,repo,group,stars,forks,release_downloads
 2026-10-09,nebari-dev/chat-pack,software-pack,1,2,0
 2026-10-09,nebari-dev/data-science-pack,software-pack,6,8,189
 2026-10-09,nebari-dev/harbor-pack,software-pack,1,0,0
+2026-10-09,nebari-dev/jhub-apps,core,46,19,0
+2026-10-09,nebari-dev/jupyterlab-gallery,core,13,2,0
+2026-10-09,nebari-dev/jupyterlab-launchpad,core,20,8,4
 2026-10-09,nebari-dev/langfuse-pack,software-pack,0,1,0
 2026-10-09,nebari-dev/lgtm-pack,software-pack,1,1,14
 2026-10-09,nebari-dev/llm-serving-pack,software-pack,3,3,2
 2026-10-09,nebari-dev/mlflow-pack,software-pack,1,2,17
 2026-10-09,nebari-dev/nebari,core,328,113,0
 2026-10-09,nebari-dev/nebari-frames,software-pack,2,1,2
-2026-10-09,nebari-dev/nebari-infrastructure-core,core,13,13,3441
+2026-10-09,nebari-dev/nebari-infrastructure-core,core,13,13,3444
 2026-10-09,nebari-dev/nebi,core,24,9,7031
 2026-10-09,nebari-dev/nebi-pack,software-pack,1,3,84
 2026-10-09,nebari-dev/pi-coding-agent-pack,software-pack,2,0,0

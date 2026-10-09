@@ -50,10 +50,10 @@ date,registry,image,product,pulls
 2026-10-08,dockerhub,quansight/qhub-jupyterlab,nebari,49849
 2026-10-08,dockerhub,quansight/qhub-jupyterlab-centos,nebari,851
 2026-10-08,dockerhub,quansight/qhub-ubuntu-base,nebari,551
-2026-10-09,dockerhub,artifactkeeper/backend,artifact-keeper,117375
+2026-10-09,dockerhub,artifactkeeper/backend,artifact-keeper,117383
 2026-10-09,dockerhub,artifactkeeper/docker-desktop,artifact-keeper,1217
-2026-10-09,dockerhub,artifactkeeper/openscap,artifact-keeper,119485
-2026-10-09,dockerhub,artifactkeeper/scanner-adapter,artifact-keeper,52049
+2026-10-09,dockerhub,artifactkeeper/openscap,artifact-keeper,119489
+2026-10-09,dockerhub,artifactkeeper/scanner-adapter,artifact-keeper,52053
 2026-10-09,dockerhub,artifactkeeper/web,artifact-keeper,31255
 2026-10-09,ghcr,nebari-dev/apps-pack%2Fapps-api,software-pack,170
 2026-10-09,ghcr,nebari-dev/apps-pack%2Fapps-mcp,software-pack,228
