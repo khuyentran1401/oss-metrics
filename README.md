@@ -8,13 +8,14 @@ Usage numbers for OpenTeams open-source projects, shown on the [stats page](http
 | --- | --- |
 | Container pulls | Docker Hub (`quansight/qhub-*`, `artifactkeeper/*`), quay.io (`nebari`, `quansight/qhub-*`), ghcr.io (`nebari-dev`) |
 | Downloads | GitHub release files, conda-forge, PyPI |
-| Stars | GitHub stars on [nebari](https://github.com/nebari-dev/nebari), [nebari-infrastructure-core](https://github.com/nebari-dev/nebari-infrastructure-core), [nebi](https://github.com/nebari-dev/nebi), [artifact-keeper](https://github.com/artifact-keeper/artifact-keeper) |
+| Stars | GitHub stars on [nebari](https://github.com/nebari-dev/nebari), [nebari-infrastructure-core](https://github.com/nebari-dev/nebari-infrastructure-core), [nebi](https://github.com/nebari-dev/nebi), [artifact-keeper](https://github.com/artifact-keeper/artifact-keeper), and the Jupyter tools [jhub-apps](https://github.com/nebari-dev/jhub-apps), [jupyterlab-launchpad](https://github.com/nebari-dev/jupyterlab-launchpad), [jupyterlab-gallery](https://github.com/nebari-dev/jupyterlab-gallery) |
 | Projects | The 3 products above, plus the software packs in [tracked-packs.yaml](https://github.com/nebari-dev/software-pack-dashboard/blob/main/tracked-packs.yaml) |
 
 ## What's combined
 
 - **Nebari = classic + NIC.** They're the old and new versions of the same product.
 - **QHub counts as Nebari.** QHub is Nebari's name before 2022.
+- **Jupyter tools = jhub-apps, jupyterlab-launchpad and jupyterlab-gallery.** They're used outside Nebari too, so they get their own row.
 
 ## What's left out
 
@@ -24,7 +25,7 @@ Usage numbers for OpenTeams open-source projects, shown on the [stats page](http
 
 ## Known limits
 
-- PyPI and quay only keep 180 and 90 days of history, so those counts start from then.
+- PyPI and quay only keep 180 and 90 days of history, so those counts start from then. PyPI counts exclude mirror downloads, so they're lower than pepy.tech's totals.
 - Container pulls count every pull, including each Dask worker pod, so they're higher than the number of installs.
 
 ## Update

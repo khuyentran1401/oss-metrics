@@ -20,13 +20,18 @@ REPOS = [
     "nebari-dev/nebari-infrastructure-core",
     "nebari-dev/nebari",
     "artifact-keeper/artifact-keeper",
+    # Jupyter tools that also get used outside Nebari.
+    "nebari-dev/jhub-apps",
+    "nebari-dev/jupyterlab-launchpad",
+    "nebari-dev/jupyterlab-gallery",
 ]
 
 # The dashboard's list of first-party software packs; read at runtime so new packs are picked up.
 TRACKED_PACKS_PATH = "/repos/nebari-dev/software-pack-dashboard/contents/tracked-packs.yaml"
 
-CONDA_PACKAGES = ["conda-forge/nebari", "conda-forge/nebi"]
-PYPI_PACKAGES = ["nebari"]
+JUPYTER_TOOLS = ["jhub-apps", "jupyterlab-launchpad", "jupyterlab-gallery"]
+CONDA_PACKAGES = ["conda-forge/nebari", "conda-forge/nebi"] + [f"conda-forge/{name}" for name in JUPYTER_TOOLS]
+PYPI_PACKAGES = ["nebari"] + JUPYTER_TOOLS
 
 # Docker Hub namespace -> image-name prefix to count ("" counts every image).
 # quansight/qhub-* is Nebari under its pre-2022 name; it gets no new pulls.
