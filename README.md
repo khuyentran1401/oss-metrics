@@ -1,29 +1,33 @@
 # oss-metrics
 
-Weekly snapshots of public download, pull and star stats for OpenTeams open-source repos.
+Usage numbers for OpenTeams open-source projects, shown on the [stats page](https://claude.ai/artifact/EYS6dhZKeywdY5fdMrEs87). Updated weekly by a GitHub Action.
 
-## Why
+## Where the numbers come from
 
-GitHub only reports the current release download total, with no record of when downloads happened. Snapshotting it regularly is the only way to show download growth over time, which says more to investors than a single total.
+| Number | Sources |
+| --- | --- |
+| Container pulls | Docker Hub (`quansight/qhub-*`, `artifactkeeper/*`), quay.io (`nebari`, `quansight/qhub-*`), ghcr.io (`nebari-dev`) |
+| Downloads | GitHub release files, conda-forge, PyPI |
+| Stars | GitHub stars on [nebari](https://github.com/nebari-dev/nebari), [nebari-infrastructure-core](https://github.com/nebari-dev/nebari-infrastructure-core), [nebi](https://github.com/nebari-dev/nebi), [artifact-keeper](https://github.com/artifact-keeper/artifact-keeper) |
+| Projects | The 3 products above, plus the software packs in [tracked-packs.yaml](https://github.com/nebari-dev/software-pack-dashboard/blob/main/tracked-packs.yaml) |
 
-Stars need it too: GitHub only shows when each star was given to accounts with push access to the repo. Downloads also come from conda-forge (all-time totals) and PyPI via pypistats, which only keeps 180 days of daily counts.
+## What's combined
 
-## Data
+- **Nebari = classic + NIC.** They're the old and new versions of the same product.
+- **QHub counts as Nebari.** QHub is Nebari's name before 2022.
 
-| File | Contents |
-|---|---|
-| `repo_stats.csv` | One row per repo per day: group (`core` or `software-pack`), stars, forks, release_downloads (cumulative). Sum the `software-pack` rows to report packs as one line. |
-| `conda_downloads.csv` | One row per conda-forge package per day: cumulative downloads. |
-| `pypi_daily.csv` | Downloads per day per PyPI package, excluding mirrors. Kept past pypistats' 180-day window. |
-| `releases.csv` | Downloads per GitHub release for core repos, rewritten on every run. |
-| `container_pulls.csv` | One row per Docker Hub or ghcr.io image per day: cumulative pulls. Docker Hub covers `quansight/qhub-*` (Nebari's pre-2022 name, no new pulls) and `artifactkeeper/*`. |
-| `quay_daily.csv` | Pulls per day across quay.io/nebari, kept past quay's 90-day window. Excludes `charts/nebari-chat`, whose ~4,900 pulls a day come from an automated sync loop. |
+## What's left out
 
-## Setup
+- **ghcr.io/artifact-keeper:** its pull rate suggests mostly CI.
+- **Software pack downloads and stars:** small, and GitHub release counts miss most pack installs since packs ship as container images. Pack usage is counted in container pulls instead.
+- **Stars on docs and tutorial repos:** only the products' own repos count.
 
-To track another repo, add it to `REPOS` in `scripts/snapshot.py`. Software packs come from [`tracked-packs.yaml`](https://github.com/nebari-dev/software-pack-dashboard/blob/main/tracked-packs.yaml) in software-pack-dashboard, so a new pack is tracked once it's added there.
+## Known limits
 
-## Run locally
+- PyPI and quay only keep 180 and 90 days of history, so those counts start from then.
+- Container pulls count every pull, including each Dask worker pod, so they're higher than the number of installs.
+
+## Update
 
 ```bash
 GITHUB_TOKEN=$(gh auth token) python scripts/snapshot.py
