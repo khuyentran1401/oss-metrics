@@ -32,9 +32,16 @@ PYPI_PACKAGES = ["nebari"]
 # quansight/qhub-* is Nebari under its pre-2022 name; it gets no new pulls.
 DOCKERHUB_NAMESPACES = {"quansight": "qhub", "artifactkeeper": ""}
 GHCR_ORG = "nebari-dev"
-QUAY_NAMESPACE = "nebari"
+# quay.io namespace -> image-name prefix to count, as above.
+QUAY_NAMESPACES = {"nebari": "", "quansight": "qhub"}
 # ~4,900 pulls a day for one Helm chart: an automated sync loop, not users.
-QUAY_EXCLUDED = {"charts/nebari-chat"}
+QUAY_EXCLUDED = {"nebari/charts/nebari-chat"}
+
+# Image-name fragments that mark a software pack (or a pack template or test image).
+PACK_MARKERS = (
+    "pack", "skillsctl", "provenance-collector", "frames", "ravnar", "chat", "langfuse", "superset",
+    "unity-catalog", "collab", "lgtm", "rayserve", "llm-serving", "starters/", "spin-poc", "smoke",
+)
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 API = "https://api.github.com"
@@ -107,12 +114,27 @@ def pypi_daily_rows():
     return rows
 
 
+def product_of(image):
+    """Which product an image's pulls count toward: artifact-keeper, nebi, nebari, or software-pack."""
+    namespace, name = image.replace("%2F", "/").split("/", 1)
+    if namespace == "artifactkeeper":
+        return "artifact-keeper"
+    if name.startswith("qhub"):
+        return "nebari"
+    if name == "nebi" or name.startswith("nebi-"):
+        return "nebi"
+    if any(marker in name for marker in PACK_MARKERS):
+        return "software-pack"
+    return "nebari"
+
+
 def dockerhub_rows():
     rows = []
     for namespace, prefix in DOCKERHUB_NAMESPACES.items():
         images = fetch_json(f"https://hub.docker.com/v2/repositories/{namespace}/?page_size=100")["results"]
         rows += [
-            {"date": TODAY, "registry": "dockerhub", "image": f"{namespace}/{image['name']}", "pulls": image["pull_count"]}
+            {"date": TODAY, "registry": "dockerhub", "image": f"{namespace}/{image['name']}",
+             "product": product_of(f"{namespace}/{image['name']}"), "pulls": image["pull_count"]}
             for image in images
             if image["name"].startswith(prefix)
         ]
@@ -135,22 +157,25 @@ def ghcr_rows():
     rows = []
     for name in sorted(names):
         count = re.search(r'Total downloads[\s\S]{0,200}?title="(\d+)"', fetch_html(f"{packages_url}/container/package/{name}"))
-        rows.append({"date": TODAY, "registry": "ghcr", "image": f"{GHCR_ORG}/{name}", "pulls": int(count.group(1))})
+        image = f"{GHCR_ORG}/{name}"
+        rows.append({"date": TODAY, "registry": "ghcr", "image": image, "product": product_of(image), "pulls": int(count.group(1))})
     return rows
 
 
 def quay_daily_rows():
-    """Pulls per day across the namespace; quay keeps 90 days, merging keeps the rest."""
+    """Pulls per day per product; quay keeps 90 days, merging keeps the rest."""
     api = "https://quay.io/api/v1/repository"
-    images = [r["name"] for r in fetch_json(f"{api}?namespace={QUAY_NAMESPACE}&public=true")["repositories"]]
     per_day = {}
-    for image in images:
-        if image in QUAY_EXCLUDED:
-            continue
-        for day in fetch_json(f"{api}/{QUAY_NAMESPACE}/{image}?includeStats=true").get("stats", []):
-            per_day[day["date"]] = per_day.get(day["date"], 0) + day["count"]
+    for namespace, prefix in QUAY_NAMESPACES.items():
+        names = [r["name"] for r in fetch_json(f"{api}?namespace={namespace}&public=true")["repositories"]]
+        for image in (f"{namespace}/{name}" for name in names if name.startswith(prefix)):
+            if image in QUAY_EXCLUDED:
+                continue
+            for day in fetch_json(f"{api}/{image}?includeStats=true").get("stats", []):
+                key = (day["date"], product_of(image))
+                per_day[key] = per_day.get(key, 0) + day["count"]
     # Today is still in progress, so its count would be partial.
-    return [{"date": d, "pulls": n} for d, n in sorted(per_day.items()) if d < TODAY]
+    return [{"date": d, "product": p, "pulls": n} for (d, p), n in sorted(per_day.items()) if d < TODAY]
 
 
 def write_csv(filename, rows):
@@ -187,7 +212,7 @@ def main():
     merge_into_csv("conda_downloads.csv", conda_rows(), ["date", "package"])
     merge_into_csv("pypi_daily.csv", pypi_daily_rows(), ["date", "package"])
     merge_into_csv("container_pulls.csv", dockerhub_rows() + ghcr_rows(), ["date", "image"])
-    merge_into_csv("quay_daily.csv", quay_daily_rows(), ["date"])
+    merge_into_csv("quay_daily.csv", quay_daily_rows(), ["date", "product"])
 
     write_csv("releases.csv", [row for repo in REPOS for row in releases[repo]])
 
